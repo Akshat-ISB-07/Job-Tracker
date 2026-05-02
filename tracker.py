@@ -25,11 +25,13 @@ GMAIL_PASS   = os.environ["GMAIL_PASS"]    # Gmail App Password (16 chars)
 NOTIFY_EMAIL = os.environ.get("NOTIFY_EMAIL", GMAIL_USER)  # where to send alerts
 
 HEADERS = {
-    "User-Agent": (
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/124.0.0.0 Safari/537.36"
-    )
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.9",
+    "Accept-Encoding": "gzip, deflate, br",
+    "Connection": "keep-alive",
+    "Upgrade-Insecure-Requests": "1",
+    "Cache-Control": "max-age=0",
 }
 
 # ── URL list ──────────────────────────────────────────────────────────────────
@@ -82,7 +84,9 @@ def job_id(company: str, title: str, link: str) -> str:
 def scrape(entry: dict) -> list[dict]:
     """Return a list of {id, title, link, company} dicts for one URL entry."""
     try:
-        resp = requests.get(entry["url"], headers=HEADERS, timeout=20)
+        session = requests.Session()
+        session.headers.update(HEADERS)
+        resp = session.get(entry["url"], timeout=20)
         resp.raise_for_status()
     except Exception as exc:
         print(f"  ⚠️  {entry['company']}: fetch failed — {exc}")
