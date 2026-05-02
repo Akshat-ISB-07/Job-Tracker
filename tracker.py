@@ -44,19 +44,12 @@ HEADERS = {
 # the exact markup of each page (use browser DevTools → Inspect).
 
 URLS = [
-    {
-        "company": "Notion",
-        "url": "https://www.notion.so/careers",
-        "selector": "a.careers-position",        # update after inspecting page
-        "title_sel": "h3",
-        "link_sel": None,                         # the element itself is the <a>
-    },
-    {
-        "company": "Stripe",
-        "url": "https://stripe.com/jobs/listing",
-        "selector": "a.JobsListings__item",
-        "title_sel": "span.JobsListings__title",
-        "link_sel": None,
+   {
+        "company": "Alvarez & Marsal",
+        "url": "https://careers.alvarezandmarsal.com/search/jobs/in/country/india",
+        "selector": "div.jobs-section__item.padded-v-small",
+        "title_sel": "h2.heading-4 a",
+        "link_sel": "h2.heading-4 a",
     },
     # ── Add more companies below ──────────────────────────────────────────────
     # {
