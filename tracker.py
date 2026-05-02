@@ -84,9 +84,15 @@ def job_id(company: str, title: str, link: str) -> str:
 def scrape(entry: dict) -> list[dict]:
     """Return a list of {id, title, link, company} dicts for one URL entry."""
     try:
-        session = requests.Session()
-        session.headers.update(HEADERS)
-        resp = session.get(entry["url"], timeout=20)
+        SCRAPER_KEY = os.environ.get("SCRAPER_API_KEY", "")
+        if SCRAPER_KEY:
+            proxy_url = f"http://scraperapi:{SCRAPER_KEY}@proxy-server.scraperapi.com:8001"
+            proxies = {"http": proxy_url, "https": proxy_url}
+            resp = requests.get(entry["url"], headers=HEADERS, proxies=proxies, verify=False, timeout=30)
+        else:
+            session = requests.Session()
+            session.headers.update(HEADERS)
+            resp = session.get(entry["url"], timeout=20)
         resp.raise_for_status()
     except Exception as exc:
         print(f"  ⚠️  {entry['company']}: fetch failed — {exc}")
